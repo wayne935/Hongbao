@@ -1,0 +1,639 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>紅包要包多少？2026 紅包金額計算機｜結婚、彌月、過年、白包</title>
+<meta name="description" content="選關係、場地、出席人數，馬上算出結婚紅包、彌月紅包、過年紅包、白包該包多少，自動避開禁忌數字。依 2026 最新紅包行情整理。">
+<meta property="og:title" content="紅包要包多少？紅包金額計算機">
+<meta property="og:description" content="三秒算出結婚、彌月、過年、白包的建議金額，自動避開禁忌數字。">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="zh_TW">
+<meta name="theme-color" content="#b3121f">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧧</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@700;900&display=swap" rel="stylesheet">
+
+<!-- 之後申請到 Google AdSense 時，把它給你的 <script> 貼在這裡 -->
+
+<style>
+:root{
+  --bg:#fbf6ee;
+  --paper:#ffffff;
+  --ink:#2a1a14;
+  --muted:#7a6a60;
+  --line:#eadfd0;
+  --red:#b3121f;
+  --red-deep:#8c0c17;
+  --gold:#e9c46a;
+  --gold-soft:#fff3d6;
+  --chip:#f6eee2;
+  --chip-on-ink:#ffffff;
+  --shadow:0 1px 2px rgba(60,20,10,.06),0 8px 24px rgba(60,20,10,.08);
+  --accent:#b3121f;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#1a1311; --paper:#251b18; --ink:#f4ebe3; --muted:#b8a89c; --line:#3a2c27;
+    --chip:#32241f; --gold-soft:#3a2d17; --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35); --accent:#f0c35c;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1a1311; --paper:#251b18; --ink:#f4ebe3; --muted:#b8a89c; --line:#3a2c27;
+  --chip:#32241f; --gold-soft:#3a2d17; --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35); --accent:#f0c35c;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:"Noto Sans TC",system-ui,-apple-system,"PingFang TC","Microsoft JhengHei",sans-serif;
+  font-size:16px; line-height:1.65;
+}
+a{color:var(--accent)}
+.wrap{max-width:720px; margin:0 auto; padding:0 16px}
+
+/* ---------- header ---------- */
+header.hero{padding:40px 0 20px}
+.kicker{display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:500; color:var(--accent);
+  background:var(--gold-soft); padding:4px 10px; border-radius:999px}
+h1{font-family:"Noto Serif TC",serif; font-weight:900; font-size:clamp(30px,7vw,44px); line-height:1.2; margin:14px 0 8px; letter-spacing:.02em}
+.sub{color:var(--muted); margin:0}
+
+/* ---------- calculator card ---------- */
+.card{background:var(--paper); border:1px solid var(--line); border-radius:18px; box-shadow:var(--shadow); padding:20px}
+.tabs{display:grid; grid-template-columns:repeat(4,1fr); gap:6px; background:var(--chip); padding:5px; border-radius:14px; margin-bottom:18px}
+.tabs label{position:relative}
+.tabs input{position:absolute; opacity:0; inset:0; margin:0; cursor:pointer}
+.tabs span{display:block; text-align:center; padding:10px 4px; border-radius:10px; font-weight:700; font-size:15px; color:var(--muted); transition:.15s}
+.tabs input:checked + span{background:var(--red); color:#fff; box-shadow:0 2px 6px rgba(179,18,31,.35)}
+.tabs input:focus-visible + span{outline:2px solid var(--gold); outline-offset:2px}
+
+.field{margin:0 0 16px; border:0; padding:0; min-width:0}
+.field legend, .field > .label{font-weight:700; font-size:14px; margin-bottom:8px; padding:0; display:block}
+.field .hint{font-weight:400; color:var(--muted); font-size:13px; margin-left:4px}
+.chips{display:flex; flex-wrap:wrap; gap:8px}
+.chips label{position:relative}
+.chips input{position:absolute; opacity:0; inset:0; margin:0; cursor:pointer}
+.chips span{display:inline-block; padding:8px 14px; border-radius:999px; background:var(--chip); border:1.5px solid transparent;
+  font-size:15px; transition:.12s; user-select:none}
+.chips input:checked + span{background:var(--gold-soft); border-color:var(--accent); color:var(--accent); font-weight:700}
+.chips input:focus-visible + span{outline:2px solid var(--gold); outline-offset:2px}
+
+.stepper{display:inline-flex; align-items:center; border:1.5px solid var(--line); border-radius:12px; overflow:hidden}
+.stepper button{width:44px; height:40px; border:0; background:var(--chip); color:var(--ink); font-size:20px; cursor:pointer}
+.stepper output{min-width:48px; text-align:center; font-weight:700}
+
+.num{width:100%; max-width:240px; font:inherit; padding:10px 12px; border-radius:12px; border:1.5px solid var(--line); background:var(--paper); color:var(--ink)}
+.num:focus{outline:none; border-color:var(--accent)}
+details.more{border-top:1px dashed var(--line); padding-top:12px; margin-top:4px}
+details.more summary{cursor:pointer; color:var(--accent); font-weight:500; font-size:14px; list-style:none}
+details.more summary::-webkit-details-marker{display:none}
+details.more summary::before{content:"＋ "}
+details.more[open] summary::before{content:"－ "}
+details.more .inner{padding-top:12px}
+
+[hidden]{display:none !important}
+
+/* ---------- result: red envelope ---------- */
+.envelope{
+  position:relative; margin-top:20px; border-radius:18px; overflow:hidden; color:#fff;
+  background:radial-gradient(120% 90% at 50% 0%, #d42332 0%, var(--red) 45%, var(--red-deep) 100%);
+  padding:56px 20px 22px; text-align:center;
+}
+.envelope::before{ /* flap */
+  content:""; position:absolute; left:-10%; right:-10%; top:-120px; height:160px;
+  background:rgba(0,0,0,.14); border-radius:0 0 50% 50%;
+}
+.seal{position:absolute; top:18px; left:50%; transform:translateX(-50%); width:48px; height:48px; border-radius:50%;
+  background:var(--gold); color:var(--red-deep); display:grid; place-items:center; font-family:"Noto Serif TC",serif; font-weight:900; font-size:22px;
+  box-shadow:0 2px 0 rgba(0,0,0,.15)}
+.env-label{font-size:14px; opacity:.85; margin-top:8px}
+.amount{font-family:"Noto Serif TC",serif; font-weight:900; color:var(--gold); font-size:clamp(44px,13vw,64px); line-height:1.1; margin:4px 0 2px; letter-spacing:.02em}
+.amount small{font-size:.4em; margin-right:6px; color:#ffe6a8}
+.special{font-family:"Noto Serif TC",serif; font-weight:700; color:var(--gold); font-size:22px; line-height:1.4; margin:10px 0}
+.summary{font-size:15px; opacity:.92; margin:0 0 14px}
+.alts{display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin-bottom:6px}
+.alt{background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.25); border-radius:12px; padding:6px 12px; font-size:13px}
+.alt b{display:block; font-size:16px; color:#fff}
+.share{margin-top:14px; display:inline-flex; align-items:center; gap:6px; border:0; border-radius:999px; padding:10px 20px; background:var(--gold); color:var(--red-deep);
+  font:inherit; font-weight:700; cursor:pointer}
+.share:active{transform:translateY(1px)}
+
+.why{margin-top:16px}
+.why h3{font-size:15px; margin:0 0 6px}
+.why ul{margin:0 0 12px; padding-left:20px}
+.why li{margin:2px 0}
+.tips li::marker{content:"🧧 "}
+
+/* ---------- support & ads ---------- */
+.support{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  margin:18px 0 0; padding:14px 16px; border-radius:14px; background:var(--gold-soft); font-size:14px}
+.support a{font-weight:700; text-decoration:none; background:var(--paper); padding:8px 14px; border-radius:999px; border:1px solid var(--line)}
+.ad-slot{margin:24px 0; min-height:0}
+
+/* ---------- content sections ---------- */
+section.content{margin:40px 0}
+section.content h2{font-family:"Noto Serif TC",serif; font-size:24px; margin:0 0 6px}
+section.content .lead{color:var(--muted); margin:0 0 14px; font-size:15px}
+.table-wrap{overflow-x:auto; border:1px solid var(--line); border-radius:14px; background:var(--paper)}
+table{border-collapse:collapse; width:100%; font-size:14px}
+th,td{padding:9px 8px; border-bottom:1px solid var(--line); text-align:center; white-space:nowrap}
+@media (max-width:420px){ th,td{padding:8px 5px; font-size:13px} }
+thead th{background:var(--chip); font-weight:700}
+tbody th{text-align:left; font-weight:500}
+tbody tr:last-child td, tbody tr:last-child th{border-bottom:0}
+td.grp{font-weight:700; text-align:left; background:var(--gold-soft)}
+.rules{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+.rule{background:var(--paper); border:1px solid var(--line); border-radius:14px; padding:14px}
+.rule h3{margin:0 0 6px; font-size:16px}
+.rule p{margin:0; font-size:14px; color:var(--muted)}
+@media (max-width:520px){ .rules{grid-template-columns:1fr} }
+.faq details{background:var(--paper); border:1px solid var(--line); border-radius:14px; padding:12px 16px; margin-bottom:8px}
+.faq summary{font-weight:700; cursor:pointer}
+.faq p{margin:8px 0 0; color:var(--ink)}
+.sources{font-size:13px; color:var(--muted)}
+.sources li{margin:3px 0}
+footer{border-top:1px solid var(--line); padding:20px 0 40px; font-size:13px; color:var(--muted)}
+</style>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"結婚紅包要包多少？","acceptedAnswer":{"@type":"Answer","text":"依關係與場地而定。一般同事在普通餐廳約 2,000 元起、五星級飯店約 3,200 元起；好友約 2,600～3,600 元起；至親好友或重要親戚約 3,600～6,600 元起，攜伴出席要再往上加。"}},
+    {"@type":"Question","name":"紅包金額有什麼禁忌？","acceptedAnswer":{"@type":"Answer","text":"喜事包雙數、喪事包單數。紅包避開數字 4（諧音「死」），婚禮紅包尾數也盡量避開 8（諧音「別」）。白包常見金額為 1,100、2,100、3,100 等單數。"}},
+    {"@type":"Question","name":"沒有出席婚禮，紅包要包多少？","acceptedAnswer":{"@type":"Answer","text":"「禮到人不到」一般約 1,200～2,000 元；交情較深的好友約 2,000～2,600 元，至親約 3,000 元起。"}},
+    {"@type":"Question","name":"回包要包多少？","acceptedAnswer":{"@type":"Answer","text":"至少要和對方當初包給你的金額一樣，常見做法是再多 600～1,200 元。"}},
+    {"@type":"Question","name":"白包要包多少？","acceptedAnswer":{"@type":"Answer","text":"點頭之交約 500 元起，同事、同學、遠親約 1,300 元起，好友或常往來的親戚約 3,100 元起，摯友或伴侶家人約 5,100 元起。若訃聞註明「懇辭奠儀」就不要包。"}}
+  ]
+}
+</script>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="hero">
+    <span class="kicker">🧧 2026 紅包行情・免費計算</span>
+    <h1>紅包要包多少？</h1>
+    <p class="sub">選好場合和關係，馬上算出不失禮的金額，自動避開禁忌數字。</p>
+  </header>
+
+  <main>
+    <div class="card" id="calc">
+      <div class="tabs" role="radiogroup" aria-label="場合">
+        <label><input type="radio" name="occ" value="wedding" checked><span>結婚</span></label>
+        <label><input type="radio" name="occ" value="miyue"><span>彌月</span></label>
+        <label><input type="radio" name="occ" value="newyear"><span>過年</span></label>
+        <label><input type="radio" name="occ" value="white"><span>白包</span></label>
+      </div>
+
+      <!-- 結婚 -->
+      <div data-occ="wedding">
+        <fieldset class="field">
+          <legend>你跟新人的關係</legend>
+          <div class="chips">
+            <label><input type="radio" name="w_rel" value="acq"><span>點頭之交</span></label>
+            <label><input type="radio" name="w_rel" value="cowork" checked><span>同事／主管</span></label>
+            <label><input type="radio" name="w_rel" value="friend"><span>好同學／好友</span></label>
+            <label><input type="radio" name="w_rel" value="close"><span>莫逆之交／重要親戚</span></label>
+          </div>
+        </fieldset>
+        <fieldset class="field">
+          <legend>喜宴地點</legend>
+          <div class="chips">
+            <label><input type="radio" name="w_venue" value="normal"><span>一般餐廳／流水席</span></label>
+            <label><input type="radio" name="w_venue" value="hall" checked><span>婚宴會館／三星飯店</span></label>
+            <label><input type="radio" name="w_venue" value="five"><span>五星級飯店</span></label>
+          </div>
+        </fieldset>
+        <fieldset class="field">
+          <legend>出席方式</legend>
+          <div class="chips">
+            <label><input type="radio" name="w_att" value="absent"><span>不出席</span></label>
+            <label><input type="radio" name="w_att" value="single" checked><span>自己一人</span></label>
+            <label><input type="radio" name="w_att" value="couple"><span>攜伴</span></label>
+            <label><input type="radio" name="w_att" value="family"><span>攜伴＋小孩</span></label>
+          </div>
+        </fieldset>
+        <div class="field" id="kidsField" hidden>
+          <span class="label">要佔位的小孩人數</span>
+          <div class="stepper">
+            <button type="button" data-step="-1" aria-label="減少">−</button>
+            <output id="kids">1</output>
+            <button type="button" data-step="1" aria-label="增加">＋</button>
+          </div>
+        </div>
+        <details class="more">
+          <summary>對方以前有包紅包給我（回包）</summary>
+          <div class="inner field">
+            <label class="label" for="w_recv">對方當初包給你多少？</label>
+            <input class="num" id="w_recv" type="number" inputmode="numeric" min="0" step="100" placeholder="例如 3600">
+          </div>
+        </details>
+      </div>
+
+      <!-- 彌月 -->
+      <div data-occ="miyue" hidden>
+        <fieldset class="field">
+          <legend>你跟寶寶爸媽的關係</legend>
+          <div class="chips">
+            <label><input type="radio" name="m_rel" value="acq"><span>普通朋友</span></label>
+            <label><input type="radio" name="m_rel" value="cowork" checked><span>公司同事</span></label>
+            <label><input type="radio" name="m_rel" value="boss"><span>他是我主管</span></label>
+            <label><input type="radio" name="m_rel" value="friend"><span>好朋友</span></label>
+            <label><input type="radio" name="m_rel" value="peer"><span>平輩親戚</span></label>
+            <label><input type="radio" name="m_rel" value="junior"><span>晚輩親戚（我是長輩）</span></label>
+          </div>
+        </fieldset>
+      </div>
+
+      <!-- 過年 -->
+      <div data-occ="newyear" hidden>
+        <fieldset class="field">
+          <legend>要包給誰？</legend>
+          <div class="chips">
+            <label><input type="radio" name="n_to" value="parent" checked><span>爸媽／公婆</span></label>
+            <label><input type="radio" name="n_to" value="grand"><span>祖父母／外公外婆</span></label>
+            <label><input type="radio" name="n_to" value="ownkid"><span>自己的小孩</span></label>
+            <label><input type="radio" name="n_to" value="relkid"><span>親戚朋友的小孩</span></label>
+            <label><input type="radio" name="n_to" value="nbkid"><span>鄰居／同事的小孩</span></label>
+          </div>
+        </fieldset>
+        <fieldset class="field" id="nStatus">
+          <legend>你目前的狀態</legend>
+          <div class="chips">
+            <label><input type="radio" name="n_status" value="student"><span>還是學生</span></label>
+            <label><input type="radio" name="n_status" value="fresh" checked><span>社會新鮮人</span></label>
+            <label><input type="radio" name="n_status" value="stable"><span>工作穩定</span></label>
+          </div>
+        </fieldset>
+        <fieldset class="field" id="nAge" hidden>
+          <legend>小孩年紀</legend>
+          <div class="chips">
+            <label><input type="radio" name="n_age" value="pre"><span>學齡前</span></label>
+            <label><input type="radio" name="n_age" value="elem" checked><span>國小</span></label>
+            <label><input type="radio" name="n_age" value="teen"><span>國高中</span></label>
+            <label><input type="radio" name="n_age" value="college"><span>大學以上</span></label>
+          </div>
+        </fieldset>
+      </div>
+
+      <!-- 白包 -->
+      <div data-occ="white" hidden>
+        <fieldset class="field">
+          <legend>你跟往生者家屬的關係</legend>
+          <div class="chips">
+            <label><input type="radio" name="b_rel" value="acq"><span>點頭之交／工作上認識</span></label>
+            <label><input type="radio" name="b_rel" value="cowork" checked><span>同事／同學／遠親</span></label>
+            <label><input type="radio" name="b_rel" value="familiar"><span>較熟的同事</span></label>
+            <label><input type="radio" name="b_rel" value="close"><span>好友／常往來的親戚</span></label>
+            <label><input type="radio" name="b_rel" value="best"><span>摯友／伴侶的家人</span></label>
+            <label><input type="radio" name="b_rel" value="direct"><span>直系家人</span></label>
+          </div>
+        </fieldset>
+        <details class="more">
+          <summary>對方家裡以前有包奠儀給我</summary>
+          <div class="inner field">
+            <label class="label" for="b_recv">對方當時包了多少？</label>
+            <input class="num" id="b_recv" type="number" inputmode="numeric" min="0" step="100" placeholder="例如 2100">
+          </div>
+        </details>
+      </div>
+
+      <!-- 結果 -->
+      <div class="envelope" aria-live="polite">
+        <div class="seal" id="seal">囍</div>
+        <div class="env-label">建議包</div>
+        <div class="amount" id="amount"><small>NT$</small>2,600</div>
+        <div class="special" id="special" hidden></div>
+        <p class="summary" id="summary"></p>
+        <div class="alts" id="alts"></div>
+        <button class="share" id="shareBtn" type="button">📤 分享給朋友</button>
+      </div>
+
+      <div class="why">
+        <h3>為什麼是這個數字？</h3>
+        <ul id="reasons"></ul>
+        <h3>小提醒</h3>
+        <ul class="tips" id="tips"></ul>
+      </div>
+
+      <!-- 抖內：把 href 換成你的 Buy Me a Coffee / Portaly 連結 -->
+      <div class="support">
+        <span>覺得有幫到你？請我喝杯咖啡，讓這個工具繼續免費 ☕</span>
+        <a href="#" id="donate" target="_blank" rel="noopener">贊助一杯咖啡</a>
+      </div>
+    </div>
+
+    <!-- 廣告位 1：申請到 AdSense 後把廣告單元貼在這裡 -->
+    <div class="ad-slot"></div>
+
+    <section class="content" id="table">
+      <h2>2026 結婚紅包行情表</h2>
+      <p class="lead">單位：新台幣，表示「起跳」金額，未含喜餅。各縣市、場館價差大，可依實際情況酌加。</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th style="text-align:left">場地</th><th>不出席</th><th>一人</th><th>攜伴</th></tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="content">
+      <h2>紅包數字禁忌</h2>
+      <p class="lead">包錯數字比包少更失禮，這幾條記住就好。</p>
+      <div class="rules">
+        <div class="rule"><h3>喜事包雙數</h3><p>結婚、彌月、過年都包雙數，常見 1,200、1,600、2,000、2,200、2,600、3,200、3,600、6,000、6,600。</p></div>
+        <div class="rule"><h3>喪事包單數</h3><p>白包包單數，常見 1,100、1,300、2,100、3,100、5,100，不要包 2,000 這類雙數。</p></div>
+        <div class="rule"><h3>避開 4</h3><p>4 諧音「死」，任何場合都避開。婚禮紅包尾數也盡量避開 8（諧音「別」）。</p></div>
+        <div class="rule"><h3>3,000 有點爭議</h3><p>有些長輩把 3 開頭視為單數，新人不在意就沒關係；保險起見可以改包 3,200。</p></div>
+      </div>
+    </section>
+
+    <!-- 廣告位 2 -->
+    <div class="ad-slot"></div>
+
+    <section class="content faq">
+      <h2>常見問題</h2>
+      <details><summary>結婚紅包要包多少？</summary><p>依關係與場地而定。一般同事在普通餐廳約 2,000 元起、五星級飯店約 3,200 元起；好友約 2,600～3,600 元起；至親好友或重要親戚約 3,600～6,600 元起，攜伴出席要再往上加。</p></details>
+      <details><summary>沒有出席婚禮，紅包要包多少？</summary><p>「禮到人不到」一般約 1,200～2,000 元；交情較深的好友約 2,000～2,600 元，至親約 3,000 元起。</p></details>
+      <details><summary>回包要包多少？</summary><p>至少要和對方當初包給你的金額一樣，常見做法是再多 600～1,200 元。如果加上去剛好卡在尷尬的金額，也可以持平再附一份小禮物。</p></details>
+      <details><summary>白包要包多少？</summary><p>點頭之交約 500 元起，同事、同學、遠親約 1,300 元起，好友或常往來的親戚約 3,100 元起，摯友或伴侶家人約 5,100 元起。若訃聞註明「懇辭奠儀」就不要包。</p></details>
+      <details><summary>過年紅包要給爸媽多少？</summary><p>社會新鮮人可以從 3,600 元開始，經濟許可的話 6,000 或 6,600 元更吉利，之後可以逐年增加。</p></details>
+    </section>
+
+    <section class="content">
+      <h2>資料來源</h2>
+      <ul class="sources">
+        <li><a href="https://blog.104.com.tw/wedding-red-envelope-custom/" target="_blank" rel="noopener">104 職場力：結婚紅包行情（2026/07/06 更新）</a></li>
+        <li><a href="https://www.edh.tw/article/29649" target="_blank" rel="noopener">早安健康：2026 紅包行情、吉數與禁忌（2026/02/12）</a></li>
+        <li><a href="https://www.money101.com.tw/blog/白包要包多少-奠儀金額行情禁忌一次搞懂" target="_blank" rel="noopener">Money101：白包要包多少（2026/09/20 更新）</a></li>
+        <li><a href="https://shopee.tw/blog/full-moon/" target="_blank" rel="noopener">蝦皮：彌月紅包行情（2024/01/10 更新）</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    本站金額為依公開行情整理的參考值，實際請依交情、地區習俗與自身經濟狀況調整。資料最後整理：2026 年 10 月。
+  </footer>
+</div>
+
+<script>
+(() => {
+  // ---------- 資料 ----------
+  // 結婚：[不出席, 一人, 攜伴]（104 職場力 2026/07）
+  const WEDDING = {
+    acq:    { normal:[1200,1600,2600], hall:[1600,2200,3000], five:[2000,3200,6000] },
+    cowork: { normal:[1600,2000,3000], hall:[2000,2600,3200], five:[2000,3200,6000] },
+    friend: { normal:[2000,2600,3600], hall:[2600,3200,6000], five:[2600,3600,6600] },
+    close:  { normal:[3000,3600,6000], hall:[3000,6000,10000], five:[3600,6600,10000] },
+  };
+  const KID_EXTRA = { normal:600, hall:1000, five:1600 }; // 每位佔位小孩的估算加額
+  const LABEL = {
+    w_rel:{acq:"點頭之交", cowork:"同事／主管", friend:"好同學／好友", close:"莫逆之交／重要親戚"},
+    w_venue:{normal:"一般餐廳／流水席", hall:"婚宴會館／三星飯店", five:"五星級飯店"},
+    w_att:{absent:"不出席", single:"自己一人出席", couple:"攜伴出席", family:"攜伴帶小孩出席"},
+  };
+  // 彌月（蝦皮 2024）：[行情下限, 行情上限, 建議]
+  const MIYUE = {
+    acq:    { label:"普通朋友", range:[500,600], pick:600 },
+    cowork: { label:"公司同事", range:[500,800], pick:600 },
+    boss:   { label:"主管", range:[800,1200], pick:1200 },
+    friend: { label:"好朋友", range:[1200,2000], pick:1600 },
+    peer:   { label:"平輩親戚", range:[600,1200], pick:1200 },
+    junior: { label:"晚輩親戚", range:[2000,3600], pick:2600 },
+  };
+  // 白包（Money101 2026/09）
+  const WHITE = {
+    acq:      { label:"點頭之交／工作上認識", pick:500,  note:"500 元起" },
+    cowork:   { label:"同事／同學／遠親",     pick:1300, note:"1,300 元起" },
+    familiar: { label:"較熟的同事",           pick:1500, note:"1,500～1,900 元" },
+    close:    { label:"好友／常往來的親戚",   pick:3100, note:"3,100 元起" },
+    best:     { label:"摯友／伴侶的家人",     pick:5100, note:"5,100 元起" },
+  };
+
+  // 各場合可用的吉利金額（已排除含 4 的數字）
+  const HAPPY = [600,1000,1200,1600,2000,2200,2600,3000,3200,3600,6000,6600,10000,12000,16000,20000,22000,26000,30000,36000,60000,66000,100000];
+  const NEWYEAR = [200,600,800,1000,1200,1600,2000,2200,2600,3200,3600,6000,6600,8800,10000,12000,16000,20000,26000,36000,66000,88000,100000];
+  const WHITE_LIST = [500,1100,1300,1500,1700,1900,2100,3100,5100,6100,10100];
+
+  const fmt = n => n.toLocaleString("zh-TW");
+  const snapUp = (list, x) => list.find(v => v >= x) ?? list[list.length - 1];
+  // 比 floor 大的吉利數字中，最接近 x 的那個
+  const nearestAbove = (list, x, floor) => {
+    const c = list.filter(v => v > floor);
+    return c.reduce((best, v) => Math.abs(v - x) < Math.abs(best - x) ? v : best, c[0]);
+  };
+  const neighbors = (list, v) => {
+    const i = list.indexOf(v);
+    return [i > 0 ? list[i-1] : null, i >= 0 && i < list.length - 1 ? list[i+1] : null];
+  };
+  // 白包：往上取到「百位數為單數、且不含 4」的金額
+  const whiteSnap = x => {
+    let n = Math.ceil(x / 100) * 100;
+    for (let k = 0; k < 200; k++, n += 100) {
+      if ((n / 100) % 2 === 1 && !String(n).includes("4")) return n;
+    }
+    return n;
+  };
+  const val = name => document.querySelector(`input[name="${name}"]:checked`)?.value;
+
+  let kids = 1;
+
+  // ---------- 計算 ----------
+  function calcWedding() {
+    const rel = val("w_rel"), venue = val("w_venue"), att = val("w_att");
+    const row = WEDDING[rel][venue];
+    const reasons = [], tips = [];
+    let amount;
+    if (att === "family") {
+      const raw = row[2] + kids * KID_EXTRA[venue];
+      amount = nearestAbove(HAPPY, raw, row[2]);
+      reasons.push(`${LABEL.w_rel[rel]}在${LABEL.w_venue[venue]}攜伴出席，行情是 ${fmt(row[2])} 元起。`);
+      reasons.push(`每位佔位的小孩依場地價位約加 ${fmt(KID_EXTRA[venue])} 元（本站估算），合計約 ${fmt(raw)} 元，取最接近的吉利數字。`);
+    } else {
+      const idx = {absent:0, single:1, couple:2}[att];
+      amount = row[idx];
+      reasons.push(`${LABEL.w_rel[rel]}在${LABEL.w_venue[venue]}${LABEL.w_att[att]}，行情是 ${fmt(amount)} 元起。`);
+    }
+    const recv = Number(document.getElementById("w_recv").value) || 0;
+    if (recv > 0) {
+      const target = snapUp(HAPPY, recv + 600);
+      if (target > amount && target - recv > 1200) {
+        // 加 600～1,200 剛好卡在沒有吉利數字的區間：持平＋小禮物
+        const even = snapUp(HAPPY, recv);
+        if (even > amount) amount = even;
+        reasons.push(`對方當初包了 ${fmt(recv)} 元。回包習慣多 600～1,200 元，但再往上的吉利數字是 ${fmt(target)} 元，跳太多了；可以包 ${fmt(amount)} 元再附一份小禮物。`);
+      } else if (target > amount) {
+        amount = target;
+        reasons.push(`對方當初包了 ${fmt(recv)} 元，回包習慣至少再多 600～1,200 元，所以調到 ${fmt(amount)} 元。`);
+      } else {
+        reasons.push(`對方當初包了 ${fmt(recv)} 元，目前的建議已經高於這個金額，回包沒問題。`);
+      }
+    }
+    tips.push("喜事包雙數，避開數字 4，婚禮紅包尾數也盡量避開 8。");
+    if (amount === 3000) tips.push("有些長輩把 3,000 視為單數，若擔心可改包 3,200。");
+    if (att === "absent") tips.push("人沒到也可以請朋友轉交，或婚禮前私下拿給新人。");
+    tips.push("如果你是女方親友、有收到喜餅，可以再加上喜餅的價值。");
+    tips.push("婚禮紅包要封口，記得在紅包袋寫上祝福和名字。");
+    const summary = `${LABEL.w_rel[rel]}・${LABEL.w_venue[venue]}・${att === "family" ? `攜伴＋${kids} 位小孩` : LABEL.w_att[att]}`;
+    return { amount, list: HAPPY, reasons, tips, summary, seal:"囍", occName:"結婚紅包" };
+  }
+
+  function calcMiyue() {
+    const r = MIYUE[val("m_rel")];
+    return {
+      amount: r.pick, list: HAPPY,
+      reasons: [`${r.label}的彌月紅包行情約 ${fmt(r.range[0])}～${fmt(r.range[1])} 元，取一個吉利的偶數。`],
+      tips: [
+        "通常是收到寶寶爸媽送的油飯或蛋糕時回包，金額至少要涵蓋禮盒價值（約 300～500 元）。",
+        "不想包現金的話，也可以送嬰兒用品當作回禮。",
+        "一樣要包雙數、避開 4。",
+      ],
+      summary: `我是寶寶爸媽的${r.label}`, seal:"喜", occName:"彌月紅包",
+    };
+  }
+
+  function calcNewYear() {
+    const to = val("n_to"), status = val("n_status"), age = val("n_age");
+    const reasons = [], tips = [];
+    let amount, summary;
+    if (to === "parent" || to === "grand") {
+      const who = to === "parent" ? "爸媽" : "祖父母";
+      if (status === "student") {
+        amount = 1200;
+        reasons.push(`學生還沒有固定收入，包給${who}重在心意。這是本站建議的小額金額，不是行情資料。`);
+        tips.push("附上一張手寫卡片，長輩通常會比收到錢更開心。");
+      } else if (status === "fresh") {
+        amount = 3600;
+        reasons.push(`社會新鮮人包給${who}，常見從 3,600 元開始。`);
+      } else {
+        amount = 6000;
+        reasons.push(`工作穩定後包給${who}，常見 6,000 或 6,600 元，之後可以逐年增加。`);
+      }
+      summary = `包給${who}（我${{student:"還是學生", fresh:"是社會新鮮人", stable:"工作穩定"}[status]}）`;
+    } else {
+      const table = {
+        ownkid: { pre:600, elem:1200, teen:2200, college:3600, label:"自己的小孩", src:"600、1,200、2,200、3,600" },
+        relkid: { pre:200, elem:600,  teen:800,  college:1200, label:"親戚朋友的小孩", src:"200、600、800、1,200" },
+        nbkid:  { pre:200, elem:600,  teen:600,  college:600,  label:"鄰居／同事的小孩", src:"200、600" },
+      }[to];
+      amount = table[age];
+      const ageLabel = {pre:"學齡前", elem:"國小", teen:"國高中", college:"大學以上"}[age];
+      reasons.push(`包給${table.label}的常見金額是 ${table.src} 元，依年紀往上加；${ageLabel}建議 ${fmt(amount)} 元。`);
+      summary = `包給${ageLabel}的${table.label}`;
+    }
+    tips.push("過年紅包不用封口，盡量用新鈔。");
+    tips.push("過年可以包 8（發），但要避開 4。");
+    return { amount, list: NEWYEAR, reasons, tips, summary, seal:"春", occName:"過年紅包" };
+  }
+
+  function calcWhite() {
+    const rel = val("b_rel");
+    if (rel === "direct") {
+      return {
+        special: "直系家人沒有固定金額",
+        reasons: ["祖父母、父母、兄弟姊妹等直系家人通常會一起分擔喪葬事務，不一定另外包白包。"],
+        tips: ["建議先跟家人討論怎麼分擔，再決定要不要包、包多少。"],
+        summary: "直系家人", seal:"奠", occName:"白包",
+      };
+    }
+    const r = WHITE[rel];
+    const reasons = [`${r.label}的白包行情約 ${r.note}。`];
+    let amount = r.pick;
+    const recv = Number(document.getElementById("b_recv").value) || 0;
+    if (recv > 0) {
+      const target = whiteSnap(recv);
+      if (target > amount) {
+        amount = target;
+        reasons.push(`對方家裡曾包 ${fmt(recv)} 元給你，可以參考當時的金額，取單數為 ${fmt(amount)} 元。`);
+      } else {
+        reasons.push(`對方家裡曾包 ${fmt(recv)} 元給你，目前建議已不低於當時金額。`);
+      }
+    }
+    const list = WHITE_LIST.includes(amount) ? WHITE_LIST : [...WHITE_LIST, amount].sort((a,b) => a-b);
+    return {
+      amount, list, reasons,
+      tips: [
+        "白包包單數（如 1,100、2,100、3,100），不要包 2,000 這類雙數，也避開 4。",
+        "如果訃聞寫「懇辭奠儀」，就不要包白包，依家屬安排致意即可。",
+        "白包不宜包太多，以免家屬日後回禮有壓力。",
+      ],
+      summary: r.label, seal:"奠", occName:"白包",
+    };
+  }
+
+  // ---------- 畫面 ----------
+  const $ = id => document.getElementById(id);
+  let last = null;
+
+  function render() {
+    const occ = val("occ");
+    document.querySelectorAll("[data-occ]").forEach(el => el.hidden = el.dataset.occ !== occ);
+    $("kidsField").hidden = !(occ === "wedding" && val("w_att") === "family");
+    const to = val("n_to");
+    $("nStatus").hidden = !(to === "parent" || to === "grand");
+    $("nAge").hidden = (to === "parent" || to === "grand");
+    $("nAge").querySelector('input[value="college"]').closest("label").hidden = to === "nbkid";
+    if (to === "nbkid" && val("n_age") === "college") document.querySelector('input[name="n_age"][value="teen"]').checked = true;
+
+    const r = { wedding:calcWedding, miyue:calcMiyue, newyear:calcNewYear, white:calcWhite }[occ]();
+    last = r;
+    $("seal").textContent = r.seal;
+    if (r.special) {
+      $("amount").hidden = true; $("special").hidden = false; $("special").textContent = r.special;
+      $("alts").innerHTML = "";
+    } else {
+      $("amount").hidden = false; $("special").hidden = true;
+      $("amount").innerHTML = `<small>NT$</small>${fmt(r.amount)}`;
+      const [lo, hi] = neighbors(r.list, r.amount);
+      $("alts").innerHTML =
+        (lo ? `<div class="alt">想省一點<b>${fmt(lo)}</b></div>` : "") +
+        (hi ? `<div class="alt">想大方一點<b>${fmt(hi)}</b></div>` : "");
+    }
+    $("summary").textContent = r.summary;
+    $("reasons").innerHTML = r.reasons.map(t => `<li>${t}</li>`).join("");
+    $("tips").innerHTML = r.tips.map(t => `<li>${t}</li>`).join("");
+  }
+
+  document.getElementById("calc").addEventListener("input", render);
+  document.querySelectorAll("[data-step]").forEach(b => b.addEventListener("click", () => {
+    kids = Math.min(6, Math.max(1, kids + Number(b.dataset.step)));
+    $("kids").textContent = kids; render();
+  }));
+
+  // 分享
+  $("shareBtn").addEventListener("click", async () => {
+    if (!last) return;
+    const what = last.special ? last.special : `建議包 ${fmt(last.amount)} 元`;
+    const text = `🧧 ${last.occName}要包多少？${last.summary}：${what}。用這個工具三秒算出來 👉`;
+    const url = location.href.split("#")[0];
+    try {
+      if (navigator.share) { await navigator.share({ title:"紅包要包多少？", text, url }); return; }
+    } catch (e) { if (e && e.name === "AbortError") return; }
+    try {
+      await navigator.clipboard.writeText(`${text} ${url}`);
+      $("shareBtn").textContent = "✅ 已複製，貼給朋友吧";
+      setTimeout(() => $("shareBtn").textContent = "📤 分享給朋友", 2000);
+    } catch (e) {}
+  });
+
+  // 行情表
+  const order = ["acq","cowork","friend","close"];
+  $("tbody").innerHTML = order.map(rel =>
+    `<tr><td class="grp" colspan="4">${LABEL.w_rel[rel]}</td></tr>` +
+    ["normal","hall","five"].map(v => {
+      const row = WEDDING[rel][v];
+      return `<tr><th>${{normal:"餐廳／流水席", hall:"會館／三星", five:"五星飯店"}[v]}</th>${row.map(n => `<td>${n >= 10000 ? "萬元起" : fmt(n)}</td>`).join("")}</tr>`;
+    }).join("")
+  ).join("");
+
+  render();
+})();
+</script>
+</body>
+</html>
