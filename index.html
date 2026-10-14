@@ -344,7 +344,24 @@ footer{border-top:1px solid var(--line); padding:20px 0 40px; font-size:13px; co
           <thead>
             <tr><th style="text-align:left">場地</th><th>不出席</th><th>一人</th><th>攜伴</th></tr>
           </thead>
-          <tbody id="tbody"></tbody>
+          <tbody>
+            <tr><td class="grp" colspan="4">點頭之交</td></tr>
+            <tr><th>餐廳／流水席</th><td>1,200</td><td>1,600</td><td>2,600</td></tr>
+            <tr><th>會館／三星</th><td>1,600</td><td>2,200</td><td>3,000</td></tr>
+            <tr><th>五星飯店</th><td>2,000</td><td>3,200</td><td>6,000</td></tr>
+            <tr><td class="grp" colspan="4">同事／主管</td></tr>
+            <tr><th>餐廳／流水席</th><td>1,600</td><td>2,000</td><td>3,000</td></tr>
+            <tr><th>會館／三星</th><td>2,000</td><td>2,600</td><td>3,200</td></tr>
+            <tr><th>五星飯店</th><td>2,000</td><td>3,200</td><td>6,000</td></tr>
+            <tr><td class="grp" colspan="4">好同學／好友</td></tr>
+            <tr><th>餐廳／流水席</th><td>2,000</td><td>2,600</td><td>3,600</td></tr>
+            <tr><th>會館／三星</th><td>2,600</td><td>3,200</td><td>6,000</td></tr>
+            <tr><th>五星飯店</th><td>2,600</td><td>3,600</td><td>6,600</td></tr>
+            <tr><td class="grp" colspan="4">莫逆之交／重要親戚</td></tr>
+            <tr><th>餐廳／流水席</th><td>3,000</td><td>3,600</td><td>6,000</td></tr>
+            <tr><th>會館／三星</th><td>3,000</td><td>6,000</td><td>萬元起</td></tr>
+            <tr><th>五星飯店</th><td>3,600</td><td>6,600</td><td>萬元起</td></tr>
+          </tbody>
         </table>
       </div>
     </section>
@@ -627,16 +644,6 @@ footer{border-top:1px solid var(--line); padding:20px 0 40px; font-size:13px; co
       setTimeout(() => $("shareBtn").textContent = "📤 分享給朋友", 2000);
     } catch (e) {}
   });
-
-  // 行情表
-  const order = ["acq","cowork","friend","close"];
-  $("tbody").innerHTML = order.map(rel =>
-    `<tr><td class="grp" colspan="4">${LABEL.w_rel[rel]}</td></tr>` +
-    ["normal","hall","five"].map(v => {
-      const row = WEDDING[rel][v];
-      return `<tr><th>${{normal:"餐廳／流水席", hall:"會館／三星", five:"五星飯店"}[v]}</th>${row.map(n => `<td>${n >= 10000 ? "萬元起" : fmt(n)}</td>`).join("")}</tr>`;
-    }).join("")
-  ).join("");
 
   render();
 })();
