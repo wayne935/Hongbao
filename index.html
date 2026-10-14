@@ -160,6 +160,20 @@ td.grp{font-weight:700; text-align:left; background:var(--gold-soft)}
 .faq p{margin:8px 0 0; color:var(--ink)}
 .sources{font-size:13px; color:var(--muted)}
 .sources li{margin:3px 0}
+.fb-link{display:block; margin-top:12px; font-size:13px; color:#ffe6a8; text-decoration:underline; text-underline-offset:3px}
+form.fb{padding:18px}
+form.fb textarea{width:100%; font:inherit; padding:10px 12px; border-radius:12px; border:1.5px solid var(--line); background:var(--paper); color:var(--ink); resize:vertical; min-height:110px}
+form.fb textarea:focus{outline:none; border-color:var(--accent)}
+form.fb .num{max-width:100%}
+.check{display:flex; gap:8px; align-items:flex-start; font-size:14px; margin:4px 0 16px; cursor:pointer}
+.check input{margin-top:5px; accent-color:var(--red)}
+.check .hint{display:block; margin:2px 0 0}
+.hp{position:absolute; left:-9999px; width:1px; height:1px; opacity:0}
+.send{border:0; border-radius:999px; padding:11px 26px; background:var(--red); color:#fff; font:inherit; font-weight:700; cursor:pointer}
+.send:disabled{opacity:.6; cursor:wait}
+.fb-status{margin:12px 0 0; font-size:14px; min-height:1.4em}
+.fb-status.ok{color:#1f7a4a}
+.fb-status.err{color:var(--accent)}
 footer{border-top:1px solid var(--line); padding:20px 0 40px; font-size:13px; color:var(--muted)}
 </style>
 
@@ -317,6 +331,7 @@ footer{border-top:1px solid var(--line); padding:20px 0 40px; font-size:13px; co
         <p class="summary" id="summary"></p>
         <div class="alts" id="alts"></div>
         <button class="share" id="shareBtn" type="button">📤 分享給朋友</button>
+        <a class="fb-link" href="#feedback" id="fbLink">覺得金額不合理？告訴我</a>
       </div>
 
       <div class="why">
@@ -389,6 +404,37 @@ footer{border-top:1px solid var(--line); padding:20px 0 40px; font-size:13px; co
       <details><summary>過年紅包要給爸媽多少？</summary><p>社會新鮮人可以從 3,600 元開始，經濟許可的話 6,000 或 6,600 元更吉利，之後可以逐年增加。</p></details>
     </section>
 
+    <section class="content" id="feedback">
+      <h2>意見回饋</h2>
+      <p class="lead">覺得金額不合理、想要新功能，或發現錯誤？告訴我，我會依大家的意見持續調整。</p>
+      <form class="card fb" id="fbForm" novalidate>
+        <fieldset class="field">
+          <legend>想反映什麼？</legend>
+          <div class="chips">
+            <label><input type="radio" name="fb_type" value="金額建議不合理" checked><span>金額建議不合理</span></label>
+            <label><input type="radio" name="fb_type" value="想要新功能"><span>想要新功能</span></label>
+            <label><input type="radio" name="fb_type" value="發現錯誤"><span>發現錯誤</span></label>
+            <label><input type="radio" name="fb_type" value="其他"><span>其他</span></label>
+          </div>
+        </fieldset>
+        <div class="field">
+          <label class="label" for="fbMsg">想說的話</label>
+          <textarea id="fbMsg" maxlength="2000" placeholder="例如：我們這邊同事結婚大多包 2,200，建議的 2,600 有點高"></textarea>
+        </div>
+        <div class="field">
+          <label class="label" for="fbEmail">你的 Email <span class="hint">選填，想收到回覆再填</span></label>
+          <input class="num" id="fbEmail" type="email" inputmode="email" autocomplete="email" placeholder="name@example.com">
+        </div>
+        <label class="check">
+          <input type="checkbox" id="fbCtx" checked>
+          <span>附上我目前的計算條件和結果<span class="hint" id="fbCtxPreview"></span></span>
+        </label>
+        <input type="checkbox" class="hp" id="fbBot" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button class="send" id="fbSend" type="submit">送出</button>
+        <p class="fb-status" id="fbStatus" role="status"></p>
+      </form>
+    </section>
+
     <section class="content">
       <h2>資料來源</h2>
       <ul class="sources">
@@ -407,6 +453,12 @@ footer{border-top:1px solid var(--line); padding:20px 0 40px; font-size:13px; co
 
 <script>
 (() => {
+  // ---------- 回饋設定 ----------
+  // 到 web3forms.com 用你的信箱申請 access key，貼在這裡，回饋就會直接寄到你的信箱。
+  // 留空的話，按「送出」會改成開啟訪客的郵件 App。
+  const WEB3FORMS_KEY = "";
+  const FALLBACK_MAIL = ["wschiu02", "gmail.com"].join("@");
+
   // ---------- 資料 ----------
   // 結婚：[不出席, 一人, 攜伴]（104 職場力 2026/07）
   const WEDDING = {
@@ -621,7 +673,74 @@ footer{border-top:1px solid var(--line); padding:20px 0 40px; font-size:13px; co
     $("summary").textContent = r.summary;
     $("reasons").innerHTML = r.reasons.map(t => `<li>${t}</li>`).join("");
     $("tips").innerHTML = r.tips.map(t => `<li>${t}</li>`).join("");
+    $("fbCtxPreview").textContent = contextText();
   }
+
+  function contextText() {
+    if (!last) return "";
+    const what = last.special ? last.special : `建議 ${fmt(last.amount)} 元`;
+    return `${last.occName}｜${last.summary}｜${what}`;
+  }
+
+  // ---------- 意見回饋 ----------
+  $("fbLink").addEventListener("click", e => {
+    e.preventDefault();
+    document.querySelector('input[name="fb_type"][value="金額建議不合理"]').checked = true;
+    $("fbCtx").checked = true;
+    $("feedback").scrollIntoView({ behavior: "smooth", block: "start" });
+    setTimeout(() => $("fbMsg").focus({ preventScroll: true }), 400);
+  });
+
+  $("fbForm").addEventListener("submit", async e => {
+    e.preventDefault();
+    const status = $("fbStatus");
+    const msg = $("fbMsg").value.trim();
+    status.className = "fb-status";
+    if (!msg) { status.textContent = "請先寫下想說的話。"; status.classList.add("err"); $("fbMsg").focus(); return; }
+    if ($("fbBot").checked) return; // 機器人
+    const type = val("fb_type");
+    const ctx = $("fbCtx").checked ? contextText() : "（未附上）";
+    const email = $("fbEmail").value.trim();
+    const subject = `紅包計算機回饋：${type}`;
+
+    if (!WEB3FORMS_KEY) {
+      const body = `類型：${type}\n計算條件：${ctx}\n\n${msg}`;
+      location.href = `mailto:${FALLBACK_MAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      status.textContent = "已幫你開啟郵件 App，按寄出就完成了，謝謝！";
+      status.classList.add("ok");
+      return;
+    }
+
+    $("fbSend").disabled = true;
+    status.textContent = "送出中…";
+    try {
+      const payload = {
+        access_key: WEB3FORMS_KEY,
+        subject,
+        from_name: "紅包計算機",
+        "類型": type,
+        "內容": msg,
+        "計算條件": ctx,
+        "頁面": location.href.split("#")[0],
+      };
+      if (email) payload.email = email;
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || data.success === false) throw new Error(data.message || res.status);
+      status.textContent = "收到了，謝謝你！我會參考你的意見調整。";
+      status.classList.add("ok");
+      $("fbMsg").value = "";
+    } catch (err) {
+      status.innerHTML = `送出失敗，請稍後再試，或直接<a href="mailto:${FALLBACK_MAIL}?subject=${encodeURIComponent(subject)}">寄信給我</a>。`;
+      status.classList.add("err");
+    } finally {
+      $("fbSend").disabled = false;
+    }
+  });
 
   document.getElementById("calc").addEventListener("input", render);
   document.querySelectorAll("[data-step]").forEach(b => b.addEventListener("click", () => {
